@@ -114,10 +114,10 @@ public class AutoRedFarSplineTest extends CommandOpModeAuto {
         drive.setVision(false);
 
         MovCentruPlace = drive.trajectorySequenceBuilder(startPosition)
-                .lineToLinearHeading(new Pose2d(-50, -13, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(-50, -15, Math.toRadians(180)))
                 .build();
         MovCentruMoveToStack = drive.trajectorySequenceBuilder(MovCentruPlace.end())
-                .lineToLinearHeading(new Pose2d(-58.5, -2, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(-55.5, -3, Math.toRadians(180)))
                 .build();
 
 
@@ -205,19 +205,19 @@ public class AutoRedFarSplineTest extends CommandOpModeAuto {
         SplineStackToBackboardCenter = drive.trajectorySequenceBuilder(MovCentruMoveToStack.end())
                 .setTangent(Math.toRadians(0))
                 .splineToConstantHeading(new Vector2d(0, -8), Math.toRadians(0))
-                .splineToConstantHeading(new Vector2d(40, -44), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(47, -35), Math.toRadians(0))
                 .build();
 
         SplineStackToBackboardCenter2 = drive.trajectorySequenceBuilder(MovCentruMoveToStack.end())
                 .setTangent(Math.toRadians(0))
                 .splineToConstantHeading(new Vector2d(0, -8), Math.toRadians(0))
-                .splineToConstantHeading(new Vector2d(33, -60), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(48, -35), Math.toRadians(0))
                 .build();
 
         SplineStackToBackboardCenter3 = drive.trajectorySequenceBuilder(MovCentruMoveToStack.end())
                 .setTangent(Math.toRadians(0))
                 .splineToConstantHeading(new Vector2d(0, -8), Math.toRadians(0))
-                .splineToConstantHeading(new Vector2d(46.5, -35), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(48, -35), Math.toRadians(0))
                 .build();
 
 
@@ -241,19 +241,19 @@ public class AutoRedFarSplineTest extends CommandOpModeAuto {
         SplineBackboardCenterToStack = drive.trajectorySequenceBuilder(SplineStackToBackboardCenter.end())
                 .setTangent(Math.toRadians(180))
                 .splineToConstantHeading(new Vector2d(0, -8), Math.toRadians(180))
-                .splineToConstantHeading(new Vector2d(-83, -14), Math.toRadians(180))
+                .splineToConstantHeading(new Vector2d(-73, -12), Math.toRadians(180))
                 .build();
 
         SplineBackboardCenterToStack2 = drive.trajectorySequenceBuilder(SplineStackToBackboardCenter.end())
                 .setTangent(Math.toRadians(180))
                 .splineToConstantHeading(new Vector2d(0, -8), Math.toRadians(180))
-                .splineToConstantHeading(new Vector2d(-72, -12), Math.toRadians(180))
+                .splineToConstantHeading(new Vector2d(-60, -12), Math.toRadians(180))
                 .build();
 
         SplineBackboardCenterToStack3 = drive.trajectorySequenceBuilder(SplineStackToBackboardCenter.end())
                 .setTangent(Math.toRadians(180))
                 .splineToConstantHeading(new Vector2d(0, -8), Math.toRadians(180))
-                .splineToConstantHeading(new Vector2d(-75, -12), Math.toRadians(180))
+                .splineToConstantHeading(new Vector2d(-60, -12), Math.toRadians(180))
                 .build();
 
 
@@ -385,7 +385,7 @@ public class AutoRedFarSplineTest extends CommandOpModeAuto {
 
                                 new InstantCommand(() -> {
                                     scoringSubsystem.setPivot(0);
-                                    glisiereSubsystem.setGlisiereFinalPosition(20);
+                                    glisiereSubsystem.setGlisiereFinalPosition(0);
                                 }),
 
                                 new InstantCommand(()->intakeSubsystem.setDropdown(0.05))
@@ -398,7 +398,7 @@ public class AutoRedFarSplineTest extends CommandOpModeAuto {
                 new ParallelCommandGroup(
                         new InstantCommand(() -> scoringSubsystem.setPressureDreaptaPos(Constants.PRESSURE_DREAPTA_DESCHIS)),
                         new InstantCommand(() -> scoringSubsystem.setPressureStangaPos(Constants.PRESSURE_STANGA_INCHIS)),
-                        new InstantCommand(() -> intakeSubsystem.setDropdown(0.13))
+                        new InstantCommand(() -> intakeSubsystem.setDropdown(0.135))
                 ),
 
                 //TODO: PRIMA TURA

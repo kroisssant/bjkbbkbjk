@@ -72,10 +72,12 @@ public class TeleOpMain extends CommandOpMode {
         });
 
         glisieraUp = new InstantCommand(() -> {
+            glisiereSubsystem.glisiereAutoToggle = 1;
             glisiereSubsystem.setGlisiereFinalPosition(Constants.GLISIERA_UP);
         });
 
         glisieraDown = new InstantCommand(() -> {
+            glisiereSubsystem.glisiereAutoToggle = 1;
             glisiereSubsystem.setGlisiereFinalPosition(Constants.GLISIERA_DOWN);
         });
 
@@ -87,6 +89,7 @@ public class TeleOpMain extends CommandOpMode {
                 new WaitCommand(Constants.WAIT_FOR_PIVOT),
 
                 new InstantCommand(()-> {
+                    glisiereSubsystem.glisiereAutoToggle = 1;
                     scoringSubsystem.setBratPos(Constants.BRAT_SUS);
                     glisiereSubsystem.setGlisiereFinalPosition(Constants.GLISIERA_UP);
                 })
@@ -101,6 +104,7 @@ public class TeleOpMain extends CommandOpMode {
                 new WaitCommand(Constants.WAIT_FOR_PIVOT_DOWN),
 
                 new InstantCommand(() -> {
+                    glisiereSubsystem.glisiereAutoToggle = 1;
                     glisiereSubsystem.setGlisiereFinalPosition(Constants.GLISIERA_DOWN);
                 })
 

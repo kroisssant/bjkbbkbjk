@@ -15,6 +15,7 @@ public class Constants {
 
     public static double PIVOT_JOS = 0;
     public static double PIVOT_SUS = 1;
+    public static double PIVOT_SUS_TELEOP= 0.9;
 
     public static double BRAT_SUS = 0.9;
     public static double BRAT_JOS = 0.07;
@@ -52,5 +53,7 @@ public class Constants {
 
     public static double DROPDOWN_JOS = 0.3;
     public static double DROPDOWN_SUS = 0;
+
+    public static double GLISIERA_MANUAL_POWER = 0.4;
 
 }

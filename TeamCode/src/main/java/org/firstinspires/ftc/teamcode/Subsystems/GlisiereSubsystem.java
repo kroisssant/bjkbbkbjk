@@ -24,6 +24,9 @@ public class GlisiereSubsystem extends SubsystemBase {
     private double lastVelocity = 0;
     private double lastTime = 0;
 
+    public int glisiereAutoToggle = 2;
+    public int delta = 0;
+
     private int setPoint = 0;
 
     private PIDController leftPIDController = new PIDController(
@@ -56,7 +59,12 @@ public class GlisiereSubsystem extends SubsystemBase {
 
     @Override
     public void periodic(){
-        updateControlLoop();
+        if(glisiereAutoToggle == 2)
+            updateControlLoop();
+        else if(glisiereAutoToggle == 1)
+            setGlisieraManual(Constants.GLISIERA_MANUAL_POWER*delta);
+        else  setGlisieraManual(0);
+
     }
 
     public WPILibMotionProfile getMotionProfile(double goalPosition, double goalSpeed){
@@ -102,6 +110,21 @@ public class GlisiereSubsystem extends SubsystemBase {
         glisieraDreapta.set(rightPower);
 
         graphTelemetry(state);
+    }
+
+    public void setGlisieraManual(double power){
+        if(glisieraDreapta.getCurrentPosition() <= Constants.GLISIERA_UP &&
+                glisieraStanga.getCurrentPosition() <= Constants.GLISIERA_UP &&
+                glisieraDreapta.getCurrentPosition() >= Constants.GLISIERA_DOWN - 10 &&
+                glisieraStanga.getCurrentPosition() >= Constants.GLISIERA_DOWN - 10 ){
+
+            glisieraDreapta.set(power);
+            glisieraStanga.set(power);
+        }
+        else {
+            glisieraDreapta.set(0);
+            glisieraStanga.set(0);
+        }
     }
 
     public boolean glisieraIsAtPlace(){

@@ -29,7 +29,7 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
-@Autonomous
+@Autonomous(name = "AutoConcursRedFar")
 public class AutoRedFar3 extends CommandOpModeAuto {
     SampleMecanumDrive drive;
     GlisiereSubsystem glisiereSubsystem;
@@ -47,11 +47,15 @@ public class AutoRedFar3 extends CommandOpModeAuto {
 
     private ConditionalCommand autoCommand;
 
+    private int caz = 3;
+
     private Pose2d startPosition = new Pose2d(-40, -64, Math.toRadians(90));
 
     private TrajectorySequence MovLeftPlace;
     private TrajectorySequence MovCentruPlace;
     private TrajectorySequence MovRightPlace;
+
+
     private TrajectorySequence MovLeftMoveToStack;
     private TrajectorySequence MovCentruMoveToStack;
     private TrajectorySequence MovRightMoveToStack;
@@ -73,6 +77,11 @@ public class AutoRedFar3 extends CommandOpModeAuto {
     private TrajectorySequence StackToBackboardR2;
 
     private TrajectorySequence StackToBackboardCenterR3;
+    private TrajectorySequence StackToBackboardLeft2;
+    private TrajectorySequence StackToBackboardLeft3;
+
+    private TrajectorySequence StackToBackboardRight2;
+    private TrajectorySequence StackToBackboardRight3;
     private TrajectorySequence StackToBackboardR3;
 
 
@@ -97,6 +106,7 @@ public class AutoRedFar3 extends CommandOpModeAuto {
         intakeSubsystem = new IntakeSubsystem(hardwareMap);
         scoringSubsystem = new ScoringSubsystem(hardwareMap);
 
+        glisiereSubsystem.glisiereAutoToggle = 2;
         scoringSubsystem.pressureClose();
         intakeSubsystem.dropdownUp();
 
@@ -174,40 +184,55 @@ public class AutoRedFar3 extends CommandOpModeAuto {
 
 
 
-
-
-
-
-
-
-        MovLeftPlace = drive.trajectorySequenceBuilder(startPosition)
-                .lineToLinearHeading(new Pose2d(-45, -35, Math.toRadians(90)))
-                .build();
-
-        MovRightPlace = drive.trajectorySequenceBuilder(startPosition)
-                .lineToLinearHeading(new Pose2d(-36, -33, Math.toRadians(180)))
-                .build();
-
-        MovLeftMoveToStack = drive.trajectorySequenceBuilder(MovLeftPlace.end())
-                .splineToLinearHeading(new Pose2d(-60, -12, Math.toRadians(180)), Math.toRadians(180))
-                .build();
-
-        MovRightMoveToStack = drive.trajectorySequenceBuilder(MovRightPlace.end())
-                .setTangent(Math.toRadians(90))
-                .splineToLinearHeading(new Pose2d(-60, -12, Math.toRadians(180)), Math.toRadians(180))
-                .build();
-
-
-
         StackToBackboardLeft = drive.trajectorySequenceBuilder(StackToBackboard1.end())
                 .lineToLinearHeading(new Pose2d(50, -30, Math.toRadians(180)))
                 .build();
 
-
-
         StackToBackboardRight = drive.trajectorySequenceBuilder(StackToBackboard1.end())
-                .lineToLinearHeading(new Pose2d(50, -40, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(50, -55, Math.toRadians(180)))
                 .build();
+
+
+
+        StackToBackboardLeft2 = drive.trajectorySequenceBuilder(StackToBackboard1.end())
+                .lineToLinearHeading(new Pose2d(50, -30, Math.toRadians(180)))
+                .build();
+
+        StackToBackboardRight2 = drive.trajectorySequenceBuilder(StackToBackboard1.end())
+                .lineToLinearHeading(new Pose2d(50, -55, Math.toRadians(180)))
+                .build();
+
+
+
+        StackToBackboardLeft3 = drive.trajectorySequenceBuilder(StackToBackboard1.end())
+                .lineToLinearHeading(new Pose2d(50, -30, Math.toRadians(180)))
+                .build();
+
+        StackToBackboardRight3 = drive.trajectorySequenceBuilder(StackToBackboard1.end())
+                .lineToLinearHeading(new Pose2d(50, -55, Math.toRadians(180)))
+                .build();
+
+
+
+        MovLeftPlace = drive.trajectorySequenceBuilder(startPosition)
+                .lineToLinearHeading(new Pose2d(-55, -35, Math.toRadians(180)))
+                .build();
+
+        MovRightPlace = drive.trajectorySequenceBuilder(startPosition)
+                .lineToLinearHeading(new Pose2d(-43, -35, Math.toRadians(180)))
+                .build();
+
+
+        MovLeftMoveToStack = drive.trajectorySequenceBuilder(MovLeftPlace.end())
+                .lineToLinearHeading(new Pose2d(-56, 3, Math.toRadians(180)))
+                .build();
+
+        MovRightMoveToStack = drive.trajectorySequenceBuilder(MovRightPlace.end())
+                .lineToLinearHeading(new Pose2d(-55.5, 3, Math.toRadians(180)))
+                .build();
+
+
+
 
         pressureOpen = new InstantCommand(() -> {
             scoringSubsystem.setPressureDreaptaPos(Constants.PRESSURE_DREAPTA_DESCHIS);
@@ -337,7 +362,7 @@ public class AutoRedFar3 extends CommandOpModeAuto {
 
                 new ParallelCommandGroup(
                         new ToScoreCommand(1000, PIVOT_SUS - 0.15,  0, scoringSubsystem, glisiereSubsystem),
-                        new RoadRunnerCommand(drive, StackToBackboardCenter)
+                        new RoadRunnerCommand(drive, StackToBackboardLeft)
                 ),
 
                 new InstantCommand(() -> {
@@ -449,7 +474,7 @@ public class AutoRedFar3 extends CommandOpModeAuto {
 
                 new ParallelCommandGroup(
                         new ToScoreCommand(1000, PIVOT_SUS - 0.15,  0, scoringSubsystem, glisiereSubsystem),
-                        new RoadRunnerCommand(drive, StackToBackboardCenterR2)
+                        new RoadRunnerCommand(drive, StackToBackboardLeft2)
                 ),
 
 
@@ -552,7 +577,7 @@ public class AutoRedFar3 extends CommandOpModeAuto {
                     scoringSubsystem.setBratPos(Constants.BRAT_SUS);
                 }),
 
-                new RoadRunnerCommand(drive, StackToBackboardCenterR3),
+                new RoadRunnerCommand(drive, StackToBackboardLeft3),
 
                 new InstantCommand(() -> {
                     scoringSubsystem.setPressureDreaptaPos(Constants.PRESSURE_DREAPTA_DESCHIS);
@@ -576,6 +601,8 @@ public class AutoRedFar3 extends CommandOpModeAuto {
                     scoringSubsystem.setPivot(0);
                 })
         );
+
+
 
 
         //caz center
@@ -1025,7 +1052,7 @@ public class AutoRedFar3 extends CommandOpModeAuto {
 
                 new ParallelCommandGroup(
                         new ToScoreCommand(1000, PIVOT_SUS - 0.15,  0, scoringSubsystem, glisiereSubsystem),
-                        new RoadRunnerCommand(drive, StackToBackboardCenter)
+                        new RoadRunnerCommand(drive, StackToBackboardRight)
                 ),
 
                 new InstantCommand(() -> {
@@ -1137,7 +1164,7 @@ public class AutoRedFar3 extends CommandOpModeAuto {
 
                 new ParallelCommandGroup(
                         new ToScoreCommand(1000, PIVOT_SUS - 0.15,  0, scoringSubsystem, glisiereSubsystem),
-                        new RoadRunnerCommand(drive, StackToBackboardCenterR2)
+                        new RoadRunnerCommand(drive, StackToBackboardRight2)
                 ),
 
 
@@ -1240,7 +1267,7 @@ public class AutoRedFar3 extends CommandOpModeAuto {
                     scoringSubsystem.setBratPos(Constants.BRAT_SUS);
                 }),
 
-                new RoadRunnerCommand(drive, StackToBackboardCenterR3),
+                new RoadRunnerCommand(drive, StackToBackboardRight3),
 
                 new InstantCommand(() -> {
                     scoringSubsystem.setPressureDreaptaPos(Constants.PRESSURE_DREAPTA_DESCHIS);
@@ -1279,7 +1306,19 @@ public class AutoRedFar3 extends CommandOpModeAuto {
 
     @Override
     public void runOnce() {
-        autoCenter.schedule();
+        autoRight.schedule();
+
+        //1 == center default, 2 == left, 3 == right
+//        autoCommand = new ConditionalCommand(
+//                autoLeft,
+//                new ConditionalCommand(
+//                        autoRight,
+//                        autoCenter,
+//                        () -> /*pipeline.getCaz() == 3*/ caz==3
+//                ),
+//                () -> /*pipeline.getCaz() == 2*/ caz==2
+//        );
+
 
         new Thread(() -> camera.closeCameraDevice());
     }

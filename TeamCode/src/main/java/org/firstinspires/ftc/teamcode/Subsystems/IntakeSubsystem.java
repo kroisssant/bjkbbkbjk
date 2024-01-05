@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.Utils.RNSMotor;
 public class IntakeSubsystem extends SubsystemBase {
     RNSMotor motorIntake;
 
-    public boolean dropdownToggle = true;
+    public boolean dropdownToggle = false;
     Servo dropdown;
 
     public IntakeSubsystem(HardwareMap hardwareMap){

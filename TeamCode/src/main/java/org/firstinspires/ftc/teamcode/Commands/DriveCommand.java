@@ -10,6 +10,8 @@ public class DriveCommand extends CommandBase {
     private DriveSubsystem driveSubsystem;
     private DoubleSupplier fw, str, rot;
 
+    public boolean slowed = false;
+
     public DriveCommand(DriveSubsystem driveSubsystem, DoubleSupplier fw, DoubleSupplier str, DoubleSupplier rot) {
         this.driveSubsystem = driveSubsystem;
         this.fw = fw;
@@ -21,6 +23,10 @@ public class DriveCommand extends CommandBase {
 
     @Override
     public void execute() {
-        driveSubsystem.drive(str.getAsDouble(), -fw.getAsDouble(), rot.getAsDouble());
+        if(slowed == false)
+            driveSubsystem.drive(str.getAsDouble(), -fw.getAsDouble(), rot.getAsDouble());
+        else
+            driveSubsystem.drive(0.4*str.getAsDouble(), -0.4*fw.getAsDouble(), -0.4*rot.getAsDouble());
+
     }
 }

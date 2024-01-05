@@ -105,7 +105,7 @@ public class autoRedFar2 extends CommandOpModeAuto {
                 .lineToLinearHeading(new Pose2d(-50, -15, Math.toRadians(180)))
                 .build();
         MovCentruMoveToStack = drive.trajectorySequenceBuilder(MovCentruPlace.end())
-                .lineToLinearHeading(new Pose2d(-55, 3, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(-61, 3, Math.toRadians(180)))
                 .build();
 
 
@@ -429,6 +429,7 @@ public class autoRedFar2 extends CommandOpModeAuto {
                                     new InstantCommand(() -> {
                                         scoringSubsystem.setPressureDreaptaPos(Constants.PRESSURE_DREAPTA_INCHIS);
                                         scoringSubsystem.setPressureStangaPos(Constants.PRESSURE_STANGA_INCHIS);
+                                        glisiereSubsystem.setGlisiereFinalPosition(10);
                                         scoringSubsystem.setBratPos(0.07);
                                         scoringSubsystem.setPivot(0);
                                     }),
@@ -441,8 +442,6 @@ public class autoRedFar2 extends CommandOpModeAuto {
                             )
                         )
                 ),
-
-//                new WaitCommand(100),
 
                 new InstantCommand(()->{
                         scoringSubsystem.setPressureDreaptaPos(Constants.PRESSURE_DREAPTA_DESCHIS);
@@ -538,7 +537,7 @@ public class autoRedFar2 extends CommandOpModeAuto {
                                             new InstantCommand(() -> {
                                                 scoringSubsystem.setPressureDreaptaPos(Constants.PRESSURE_DREAPTA_INCHIS);
                                                 scoringSubsystem.setPressureStangaPos(Constants.PRESSURE_STANGA_INCHIS);
-                                                scoringSubsystem.setBratPos(0.07);
+                                                scoringSubsystem.setBratPos(0.08);
                                                 scoringSubsystem.setPivot(0);
 
                                             }),

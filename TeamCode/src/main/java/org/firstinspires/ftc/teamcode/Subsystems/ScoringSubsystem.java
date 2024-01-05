@@ -8,9 +8,9 @@ import org.firstinspires.ftc.teamcode.Constants.Constants;
 import org.firstinspires.ftc.teamcode.Constants.HardwareConstants;
 
 public class ScoringSubsystem extends SubsystemBase {
-    Servo pressureDreapta, pressureStanga;
-    Servo pivot;
-    Servo bratDreapta, bratStanga;
+    public Servo pressureDreapta, pressureStanga;
+    public Servo pivot;
+    public Servo bratDreapta, bratStanga;
     public boolean pressureToggle = false;
 
     public ScoringSubsystem(HardwareMap hardwareMap){
