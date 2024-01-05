@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
+import com.acmerobotics.dashboard.message.redux.ReceiveGamepadState;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.ConditionalCommand;
 import com.arcrobotics.ftclib.command.InstantCommand;
@@ -40,6 +41,8 @@ public class TeleOpConcurs extends CommandOpMode {
 
     private InstantCommand pressureOpen;
     private InstantCommand pressureClose;
+
+    private InstantCommand pivot;
     private InstantCommand bratUp;
 
     private InstantCommand glisieraUp;
@@ -83,6 +86,14 @@ public class TeleOpConcurs extends CommandOpMode {
             scoringSubsystem.setPressureDreaptaPos(Constants.PRESSURE_DREAPTA_DESCHIS);
             scoringSubsystem.setPressureStangaPos(Constants.PRESSURE_STANGA_DESCHIS);
             scoringSubsystem.pressureToggle = false;
+        });
+
+        pivot = new InstantCommand(() -> {
+            if(scoringSubsystem.pivot.getPosition() == Constants.PIVOT_JOS){
+                scoringSubsystem.setPivot(Constants.PIVOT_SUS);
+            } else {
+                scoringSubsystem.setPivot(Constants.PIVOT_JOS);
+            }
         });
 
         pressureClose = new InstantCommand(() -> {
@@ -139,6 +150,9 @@ public class TeleOpConcurs extends CommandOpMode {
 //                .whileHeld(new InstantCommand(intakeSubsystem::runRvs))
 //                .whenReleased(new InstantCommand(intakeSubsystem::end));
 
+        driver2.getGamepadButton(GamepadKeys.Button.X)
+                .whenPressed(pivot);
+
         driver2.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
                 .whenPressed(toScoreSequence1);
 
@@ -167,13 +181,13 @@ public class TeleOpConcurs extends CommandOpMode {
 
         driver2.getGamepadButton(GamepadKeys.Button.DPAD_RIGHT)
                 .whenPressed(new InstantCommand(()-> {
-                            scoringSubsystem.setBratPos(Constants.BRAT_SUS);
+                            scoringSubsystem.setBratPos(scoringSubsystem.bratDreapta.getPosition()+0.1);
                         })
                 );
 
         driver2.getGamepadButton(GamepadKeys.Button.DPAD_LEFT)
                 .whenPressed(new InstantCommand(()-> {
-                            scoringSubsystem.setBratPos(Constants.BRAT_JOS);
+                    scoringSubsystem.setBratPos(scoringSubsystem.bratDreapta.getPosition()-0.1);
                         })
                 );
 
@@ -186,7 +200,7 @@ public class TeleOpConcurs extends CommandOpMode {
                         )
                 );
 
-        driver2.getGamepadButton(GamepadKeys.Button.X)
+        driver1.getGamepadButton(GamepadKeys.Button.X)
                 .whenPressed(
                         new ConditionalCommand(
                                 new InstantCommand(()->{
@@ -203,7 +217,7 @@ public class TeleOpConcurs extends CommandOpMode {
                         )
                 );
 
-        driver2.getGamepadButton(GamepadKeys.Button.B)
+        driver1.getGamepadButton(GamepadKeys.Button.B)
                 .whenPressed(
                         new ConditionalCommand(
                                 new InstantCommand(()->{
