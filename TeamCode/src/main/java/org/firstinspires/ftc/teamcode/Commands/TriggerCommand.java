@@ -21,9 +21,9 @@ public class TriggerCommand extends CommandBase {
     @Override
     public void execute(){
         if(rightTrigger.getAsDouble() > 0.1){
-            intakeSubsystem.runFwd();
+            intakeSubsystem.setIntakePower(-0.65);
         } else if(leftTrigger.getAsDouble() > 0.1){
-            intakeSubsystem.runRvs();
+            intakeSubsystem.setIntakePower(0.65);
         } else {
             intakeSubsystem.end();
         }

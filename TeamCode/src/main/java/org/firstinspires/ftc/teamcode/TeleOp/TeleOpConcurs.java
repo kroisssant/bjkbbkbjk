@@ -187,7 +187,7 @@ public class TeleOpConcurs extends CommandOpMode {
                     glisiereSubsystem.glisiereAutoToggle = 0;
                 }));
 
-        driver1.getGamepadButton(GamepadKeys.Button.Y)
+        driver1.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
                 .whenPressed(toScoreSequence1);
 
         driver1.getGamepadButton(GamepadKeys.Button.A)
@@ -217,7 +217,16 @@ public class TeleOpConcurs extends CommandOpMode {
                         )
                 );
 
-        driver1.getGamepadButton(GamepadKeys.Button.X)
+        driver1.getGamepadButton(GamepadKeys.Button.Y)
+                .whenPressed(
+                        new ConditionalCommand(
+                                pressureOpen,
+                                pressureClose,
+                                () -> scoringSubsystem.pressureToggle
+                        )
+                );
+
+        driver2.getGamepadButton(GamepadKeys.Button.X)
                 .whenPressed(
                         new ConditionalCommand(
                                 new InstantCommand(()->{
@@ -234,7 +243,7 @@ public class TeleOpConcurs extends CommandOpMode {
                         )
                 );
 
-        driver1.getGamepadButton(GamepadKeys.Button.B)
+        driver2.getGamepadButton(GamepadKeys.Button.B)
                 .whenPressed(
                         new ConditionalCommand(
                                 new InstantCommand(()->{
