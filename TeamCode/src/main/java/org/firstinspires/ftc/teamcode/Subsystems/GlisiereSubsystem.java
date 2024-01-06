@@ -56,12 +56,11 @@ public class GlisiereSubsystem extends SubsystemBase {
 
     @Override
     public void periodic(){
-        if(glisiereAutoToggle == 2)
-            updateControlLoop();
-        else if(glisiereAutoToggle == 1)
-            setGlisieraManual(Constants.GLISIERA_MANUAL_POWER*delta);
-        else  setGlisieraManual(0);
+        updateControlLoop();
 
+        if(glisieraIsAtPlace()) {
+            Constants.slideInputState = Constants.SlideInputState.MANUAL;
+        }
     }
 
     public WPILibMotionProfile getMotionProfile(double goalPosition, double goalSpeed){
@@ -93,6 +92,8 @@ public class GlisiereSubsystem extends SubsystemBase {
     public void setGlisiereFinalPosition(int position){
         timer = new Timer();
         motionProfile = getMotionProfile(position, 0);
+
+        Constants.slideInputState = Constants.SlideInputState.PID;
         setPoint = position;
     }
 
@@ -105,23 +106,15 @@ public class GlisiereSubsystem extends SubsystemBase {
 
         glisieraStanga.set(leftPower);
         glisieraDreapta.set(rightPower);
-
-        graphTelemetry(state);
     }
 
     public void setGlisieraManual(double power){
-        if(glisieraDreapta.getCurrentPosition() <= Constants.GLISIERA_UP &&
-                glisieraStanga.getCurrentPosition() <= Constants.GLISIERA_UP &&
-                glisieraDreapta.getCurrentPosition() >= Constants.GLISIERA_DOWN - 10 &&
-                glisieraStanga.getCurrentPosition() >= Constants.GLISIERA_DOWN - 10 ){
+        glisieraDreapta.set(power);
+        glisieraStanga.set(power);
+    }
 
-            glisieraDreapta.set(power);
-            glisieraStanga.set(power);
-        }
-        else {
-            glisieraDreapta.set(0);
-            glisieraStanga.set(0);
-        }
+    public double getPassivePower() {
+        return Constants.GLISIERE_KG + Constants.GLISIERA_KE * getAveragePosition() / Constants.GLISIERA_MAX_TICKS;
     }
 
     public boolean glisieraIsAtPlace(){

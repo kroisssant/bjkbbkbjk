@@ -18,6 +18,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Commands.DriveCommand;
+import org.firstinspires.ftc.teamcode.Commands.ManualSlidesCommand;
 import org.firstinspires.ftc.teamcode.Commands.TriggerCommand;
 import org.firstinspires.ftc.teamcode.Constants.Constants;
 import org.firstinspires.ftc.teamcode.Constants.HardwareConstants;
@@ -62,6 +63,8 @@ public class TeleOpConcurs extends CommandOpMode {
     private boolean pressureDreaptaToggle = true;
     private boolean pressureStangaToggle = true;
 
+    private ManualSlidesCommand manualSlidesCommand;
+
     @Override
     public void initialize() {
         driveSubsystem = new DriveSubsystem(hardwareMap);
@@ -74,8 +77,8 @@ public class TeleOpConcurs extends CommandOpMode {
 
         intakeTriggerCommand = new TriggerCommand(intakeSubsystem, ()-> driver1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER), ()-> driver1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER));
 
-
         driveCommand = new DriveCommand(driveSubsystem, driver1::getLeftY, driver1::getLeftX, driver1::getRightX);
+        manualSlidesCommand = new ManualSlidesCommand(glisiereSubsystem, () -> driver2.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER), () -> driver2.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER));
 
         left_trigger_driver1 = new TriggerReader(driver1, GamepadKeys.Trigger.LEFT_TRIGGER);
         right_trigger_driver1 = new TriggerReader(driver1, GamepadKeys.Trigger.RIGHT_TRIGGER);
@@ -247,7 +250,9 @@ public class TeleOpConcurs extends CommandOpMode {
                         .whenReleased(new InstantCommand(()->driveCommand.slowed = false));
 
         driveSubsystem.setDefaultCommand(driveCommand);
-        register(glisiereSubsystem);
+        glisiereSubsystem.setDefaultCommand(manualSlidesCommand);
         intakeSubsystem.setDefaultCommand(intakeTriggerCommand);
+
+        register(glisiereSubsystem);
     }
 }

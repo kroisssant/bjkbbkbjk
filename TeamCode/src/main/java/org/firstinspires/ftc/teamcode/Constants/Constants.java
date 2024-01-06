@@ -4,6 +4,11 @@ import com.acmerobotics.dashboard.config.Config;
 
 @Config
 public class Constants {
+
+    public static enum SlideInputState {
+        MANUAL,
+        PID
+    }
     public static final double APRIL_TAG_MAX_VEL = 50; // in / s
     public static final double APRIL_TAG_MAX_ACC = 50; // in / s
     public static final long WAIT_FOR_BRAT_JOS = 1200;
@@ -42,9 +47,8 @@ public class Constants {
     public static double INTAKE_POWER = 0.8;
 
     public static int GLISIERA_UP = 2000;
-    public static  int GLISIERA_DOWN = 0;
-
-    public static int PID_POS_TOLERANCE = 5;
+    public static int GLISIERA_DOWN = 0;
+    public static int PID_POS_TOLERANCE = 20;
 
     public static int WAIT_FOR_PIVOT = 250;
     public static int WAIT_FOR_PIVOT_DOWN = 1000;
@@ -54,6 +58,9 @@ public class Constants {
     public static double DROPDOWN_JOS = 0.3;
     public static double DROPDOWN_SUS = 0;
 
-    public static double GLISIERA_MANUAL_POWER = 0.4;
+    public static double GLISIERA_MAX_TICKS = 2200;
 
+    public static double GLISIERA_KE = 0.1;
+
+    public static SlideInputState slideInputState = SlideInputState.PID;
 }
