@@ -19,4 +19,14 @@ public class RNSMotor extends Motor {
     public void set(double power) {
         super.set(power * (Constants.NOMINAL_VOLTAGE / hardwareMap.getAll(VoltageSensor.class).get(0).getVoltage()));
     }
+
+    @Override
+    public void resetEncoder(){
+        Constants.ENCODER_RESET_VALUE = getCurrentPosition();
+    }
+
+    @Override
+    public int getCurrentPosition(){
+        return encoder.getPosition() - Constants.ENCODER_RESET_VALUE;
+    }
 }

@@ -21,7 +21,7 @@
             <goBILDA5202SeriesMotor name = "RightFront" port="3" />
             <Servo name = "bratStanga" port = "2" />
             <Servo name = "pivot" port = "4" />
-            <Servo name = "pressureStanga" port = "0" />
+            <Servo name = "pressureStanga" port = "1" />
             <Servo name = "dropdown" port = "5" />
         </LynxModule>
 

@@ -195,7 +195,7 @@ public class AutoRedFar3 extends CommandOpModeAuto {
                 .lineToLinearHeading(new Pose2d(-60, -30, Math.toRadians(180)))
                 .build();
         MovLeftMoveToStack = drive.trajectorySequenceBuilder(MovLeftPlace.end())
-                .lineToLinearHeading(new Pose2d(-59, -2, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(-57.5, -2, Math.toRadians(180)))
                 .build();
         StackToBackboard1Left = drive.trajectorySequenceBuilder(MovLeftMoveToStack.end())
                 .lineToLinearHeading(new Pose2d(30, -7, Math.toRadians(180)))
@@ -207,7 +207,7 @@ public class AutoRedFar3 extends CommandOpModeAuto {
                 .lineToLinearHeading(new Pose2d(30, -3, Math.toRadians(180)))
                 .build();
         BackboardToStackLeft1 = drive.trajectorySequenceBuilder(BackboardToStackLeft0.end())
-                .lineToLinearHeading(new Pose2d(-61.5, -3, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(-62, -3, Math.toRadians(180)))
                 .build();
         BackboardToStackGuideLeft = drive.trajectorySequenceBuilder(BackboardToStackLeft1.end())
                 .lineToLinearHeading(new Pose2d(-63, -4, Math.toRadians(180)))
@@ -216,10 +216,10 @@ public class AutoRedFar3 extends CommandOpModeAuto {
                 .lineToLinearHeading(new Pose2d(30, -7, Math.toRadians(180)))
                 .build();
         StackToBackboardLeft2 = drive.trajectorySequenceBuilder(StackToBackboardLeftR2.end())
-                .lineToLinearHeading(new Pose2d(46, -35, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(46, -30, Math.toRadians(180)))
                 .build();
         ParkLeft = drive.trajectorySequenceBuilder(StackToBackboardLeft2.end())
-                .lineToLinearHeading(new Pose2d(50, -60, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(50, -10, Math.toRadians(180)))
                 .build();
 
 
@@ -329,7 +329,7 @@ public class AutoRedFar3 extends CommandOpModeAuto {
                     scoringSubsystem.pressureToggle = false;
                 }),
 
-                new WaitCommand(50),
+                new WaitCommand(150),
 
                 new InstantCommand(()-> {
                     scoringSubsystem.pressureClose();
@@ -374,13 +374,19 @@ public class AutoRedFar3 extends CommandOpModeAuto {
                     scoringSubsystem.setBratPos(0.02);
                 }),
 
-                new WaitCommand(600),
+                new WaitCommand(400),
+
+                new InstantCommand(()->{
+                    intakeSubsystem.setIntakePower(0.5);
+                }),
+
+                new WaitCommand(350),
 
                 new InstantCommand(() -> {
                     scoringSubsystem.pressureClose();
                 }),
 
-                new WaitCommand(200),
+                new WaitCommand(400),
 
                 new InstantCommand(() -> {
                     scoringSubsystem.setBratPos(0.04);
@@ -448,12 +454,10 @@ public class AutoRedFar3 extends CommandOpModeAuto {
                     scoringSubsystem.setPressureDreaptaPos(Constants.PRESSURE_DREAPTA_DESCHIS);
                     scoringSubsystem.setPressureStangaPos(Constants.PRESSURE_STANGA_DESCHIS);
 
-                    intakeSubsystem.setDropdown(0.135);
+                    intakeSubsystem.setDropdown(0.14);
                     intakeSubsystem.runFwd();
                     glisiereSubsystem.setGlisiereFinalPosition(50);
                     scoringSubsystem.setBratPos(0.07);
-
-                    intakeSubsystem.runFwd();
                     intakeSubsystem.setDropdown(0.05);
                 }),
 
@@ -463,7 +467,7 @@ public class AutoRedFar3 extends CommandOpModeAuto {
 
                         new SequentialCommandGroup(
                                 new InstantCommand(() -> {
-                                    intakeSubsystem.setDropdown(0.16);
+                                    intakeSubsystem.setDropdown(0.163);
                                     scoringSubsystem.setBratPos(0.02);
                                 }),
 
@@ -474,22 +478,31 @@ public class AutoRedFar3 extends CommandOpModeAuto {
                                 })
                         )
                 ),
-
                 new WaitCommand(200),
 
                 new RoadRunnerCommand(drive, BackboardToStackGuideLeft),
 
 
                 //TODO TURA 2
-                new WaitCommand(700),
+                new InstantCommand(()->{
+                    glisiereSubsystem.setGlisiereFinalPosition(0);
+                    intakeSubsystem.setDropdown(0.165);
+                }),
+
+                new WaitCommand(200),
+
+                new InstantCommand(()->{
+                    intakeSubsystem.setIntakePower(0.5);
+                }),
+
+                new WaitCommand(450),
 
                 new InstantCommand(() -> {
-                    glisiereSubsystem.setGlisiereFinalPosition(0);
                     scoringSubsystem.setPressureDreaptaPos(Constants.PRESSURE_DREAPTA_INCHIS);
                     scoringSubsystem.setPressureStangaPos(Constants.PRESSURE_STANGA_INCHIS);
                 }),
 
-                new WaitCommand(150),
+                new WaitCommand(250),
 
                 new InstantCommand(() ->{
                     scoringSubsystem.setBratPos(0.05);
@@ -680,7 +693,7 @@ public class AutoRedFar3 extends CommandOpModeAuto {
                     scoringSubsystem.pressureToggle = false;
                 }),
 
-                new WaitCommand(50),
+                new WaitCommand(150),
 
                 new InstantCommand(()-> {
                     scoringSubsystem.pressureClose();
@@ -725,7 +738,13 @@ public class AutoRedFar3 extends CommandOpModeAuto {
                     scoringSubsystem.setBratPos(0.02);
                 }),
 
-                new WaitCommand(600),
+                new WaitCommand(400),
+
+                new InstantCommand(()->{
+                    intakeSubsystem.setIntakePower(0.5);
+                }),
+
+                new WaitCommand(350),
 
                 new InstantCommand(() -> {
                     scoringSubsystem.pressureClose();
@@ -1072,7 +1091,13 @@ public class AutoRedFar3 extends CommandOpModeAuto {
                 new InstantCommand(() -> {
                     scoringSubsystem.setBratPos(0.00);
                 }),
-                new WaitCommand(700),
+                new WaitCommand(400),
+
+                new InstantCommand(()->{
+                    intakeSubsystem.setIntakePower(0.5);
+                }),
+
+                new WaitCommand(350),
 
                 new InstantCommand(() -> {
                     scoringSubsystem.setPressureDreaptaPos(Constants.PRESSURE_DREAPTA_INCHIS);
