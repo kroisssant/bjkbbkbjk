@@ -59,10 +59,6 @@ public class TeleOpConcurs extends CommandOpMode {
 
 
     private TriggerCommand intakeTriggerCommand;
-
-    private boolean pressureDreaptaToggle = true;
-    private boolean pressureStangaToggle = true;
-
     private ManualSlidesCommand manualSlidesCommand;
 
     @Override
@@ -78,7 +74,7 @@ public class TeleOpConcurs extends CommandOpMode {
         intakeTriggerCommand = new TriggerCommand(intakeSubsystem, ()-> driver1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER), ()-> driver1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER));
 
         driveCommand = new DriveCommand(driveSubsystem, driver1::getLeftY, driver1::getLeftX, driver1::getRightX);
-        manualSlidesCommand = new ManualSlidesCommand(glisiereSubsystem, () -> driver2.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER), () -> driver2.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER));
+        manualSlidesCommand = new ManualSlidesCommand(glisiereSubsystem, scoringSubsystem::wasPressureClosed, () -> driver2.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER), () -> driver2.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER));
 
         left_trigger_driver1 = new TriggerReader(driver1, GamepadKeys.Trigger.LEFT_TRIGGER);
         right_trigger_driver1 = new TriggerReader(driver1, GamepadKeys.Trigger.RIGHT_TRIGGER);
@@ -208,14 +204,14 @@ public class TeleOpConcurs extends CommandOpMode {
                         new ConditionalCommand(
                                 new InstantCommand(()->{
                                     scoringSubsystem.setPressureStangaPos(Constants.PRESSURE_STANGA_DESCHIS);
-                                    pressureStangaToggle = false;
+                                    scoringSubsystem.pressureStangaToggle = false;
                                 }),
                                 new InstantCommand(()->{
                                     scoringSubsystem.setPressureStangaPos(Constants.PRESSURE_STANGA_INCHIS);
-                                    pressureStangaToggle = true;
+                                    scoringSubsystem.pressureStangaToggle = true;
 
                                 }),
-                                () -> pressureStangaToggle
+                                () -> scoringSubsystem.pressureStangaToggle
 
                         )
                 );
@@ -225,14 +221,14 @@ public class TeleOpConcurs extends CommandOpMode {
                         new ConditionalCommand(
                                 new InstantCommand(()->{
                                     scoringSubsystem.setPressureDreaptaPos(Constants.PRESSURE_DREAPTA_DESCHIS);
-                                    pressureDreaptaToggle = false;
+                                    scoringSubsystem.pressureDreaptaToggle = false;
                                 }),
                                 new InstantCommand(()->{
                                     scoringSubsystem.setPressureDreaptaPos(Constants.PRESSURE_DREAPTA_INCHIS);
-                                    pressureDreaptaToggle = true;
+                                    scoringSubsystem.pressureDreaptaToggle = true;
 
                                 }),
-                                () -> pressureDreaptaToggle
+                                () -> scoringSubsystem.pressureDreaptaToggle
                         )
                 );
 

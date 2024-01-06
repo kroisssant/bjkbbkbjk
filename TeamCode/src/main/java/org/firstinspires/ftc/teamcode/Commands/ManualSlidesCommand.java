@@ -6,14 +6,18 @@ import org.firstinspires.ftc.teamcode.Constants.Constants;
 import org.firstinspires.ftc.teamcode.Subsystems.GlisiereSubsystem;
 
 import java.util.function.DoubleSupplier;
+import java.util.function.Supplier;
 
 public class ManualSlidesCommand extends CommandBase {
     GlisiereSubsystem glisiereSubsystem;
     DoubleSupplier leftTrigger;
     DoubleSupplier rightTrigger;
 
-    public ManualSlidesCommand(GlisiereSubsystem glisiereSubsystem, DoubleSupplier leftTrigger, DoubleSupplier rightTrigger) {
+    Supplier<Boolean> wasPressureClosed;
+
+    public ManualSlidesCommand(GlisiereSubsystem glisiereSubsystem, Supplier<Boolean> wasPressureClosed, DoubleSupplier leftTrigger, DoubleSupplier rightTrigger) {
         this.glisiereSubsystem = glisiereSubsystem;
+        this.wasPressureClosed = wasPressureClosed;
         this.leftTrigger = leftTrigger;
         this.rightTrigger = rightTrigger;
 
@@ -30,6 +34,9 @@ public class ManualSlidesCommand extends CommandBase {
 
             double motorPower = rightTriggerPower - leftTriggerPower;
             glisiereSubsystem.setGlisieraManual(motorPower);
+        }
+        else if(wasPressureClosed.get()) {
+            glisiereSubsystem.setGlisiereFinalPosition(20);
         }
     }
 }

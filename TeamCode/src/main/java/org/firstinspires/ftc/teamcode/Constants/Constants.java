@@ -33,7 +33,7 @@ public class Constants {
     public static double GLISIERE_KV = 0.0005;
     public static double GLISIERE_KS = 0;
     public static double GLISIERE_KA = 0;
-    public static double GLISIERE_KG = 0;
+    public static double GLISIERE_KG = 0.01;
 
     public static double GLISIERA_STANGA_KP = 0.005;
     public static double GLISIERA_DREAPTA_KP = 0.005;

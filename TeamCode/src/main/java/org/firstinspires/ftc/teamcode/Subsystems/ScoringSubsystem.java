@@ -11,7 +11,14 @@ public class ScoringSubsystem extends SubsystemBase {
     public Servo pressureDreapta, pressureStanga;
     public Servo pivot;
     public Servo bratDreapta, bratStanga;
+
+    private boolean lastPressureToggle = false;
+
     public boolean pressureToggle = false;
+
+    public boolean pressureDreaptaToggle = false;
+
+    public boolean pressureStangaToggle = false;
 
     public ScoringSubsystem(HardwareMap hardwareMap){
         pressureDreapta = hardwareMap.get(Servo.class, HardwareConstants.ID_PRESSURE_DREAPTA);
@@ -56,6 +63,21 @@ public class ScoringSubsystem extends SubsystemBase {
         setPressureDreaptaPos(Constants.PRESSURE_DREAPTA_INCHIS);
         setPressureStangaPos(Constants.PRESSURE_STANGA_INCHIS);
         pressureToggle = true;
+    }
+
+    public boolean isPressureClosed() {
+        return pressureStangaToggle && pressureDreaptaToggle;
+    }
+
+    public boolean getLastPressureToggle() {
+        return lastPressureToggle;
+    }
+
+    public boolean wasPressureClosed() {
+        boolean wasClosed = (isPressureClosed() == true && getLastPressureToggle() == false);
+
+        lastPressureToggle = isPressureClosed();
+        return wasClosed;
     }
 
     public void setPivot(double position){

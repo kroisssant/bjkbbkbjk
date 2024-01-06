@@ -6,6 +6,7 @@ import com.ThermalEquilibrium.homeostasis.Utils.Timer;
 import com.ThermalEquilibrium.homeostasis.Utils.WPILibMotionProfile;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.controller.PIDController;
+
 import org.firstinspires.ftc.teamcode.Utils.RNSMotor;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -14,12 +15,15 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Constants.Constants;
 import org.firstinspires.ftc.teamcode.Constants.HardwareConstants;
 
+import java.util.function.Supplier;
+
 @Disabled
 
 public class GlisiereSubsystem extends SubsystemBase {
     public RNSMotor glisieraStanga, glisieraDreapta;
     private Telemetry telemetry;
     private WPILibMotionProfile motionProfile;
+
     private Timer timer = new Timer();
     private double lastVelocity = 0;
     private double lastTime = 0;
@@ -56,7 +60,9 @@ public class GlisiereSubsystem extends SubsystemBase {
 
     @Override
     public void periodic(){
-        updateControlLoop();
+        if(Constants.slideInputState == Constants.SlideInputState.PID) {
+            updateControlLoop();
+        }
 
         if(glisieraIsAtPlace()) {
             Constants.slideInputState = Constants.SlideInputState.MANUAL;

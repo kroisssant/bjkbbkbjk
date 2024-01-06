@@ -10,10 +10,10 @@ import org.firstinspires.ftc.teamcode.Constants.HardwareConstants;
 import org.firstinspires.ftc.teamcode.Utils.RNSMotor;
 
 public class IntakeSubsystem extends SubsystemBase {
-    RNSMotor motorIntake;
+    private RNSMotor motorIntake;
 
     public boolean dropdownToggle = false;
-    Servo dropdown;
+    private Servo dropdown;
 
     public IntakeSubsystem(HardwareMap hardwareMap){
         motorIntake = new RNSMotor(hardwareMap, HardwareConstants.ID_MOTOR_INTAKE);
