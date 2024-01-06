@@ -66,7 +66,7 @@ public class ScoringSubsystem extends SubsystemBase {
     }
 
     public boolean isPressureClosed() {
-        return pressureStangaToggle && pressureDreaptaToggle;
+        return (pressureStangaToggle && pressureDreaptaToggle) || pressureToggle;
     }
 
     public boolean getLastPressureToggle() {
