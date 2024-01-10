@@ -25,8 +25,9 @@ public class DriveCommand extends CommandBase {
     public void execute() {
         if(slowed == false)
             driveSubsystem.drive(str.getAsDouble(), -fw.getAsDouble(), rot.getAsDouble());
+
         else
-            driveSubsystem.drive(0.4*str.getAsDouble(), -0.4*fw.getAsDouble(), -0.4*rot.getAsDouble());
+            driveSubsystem.drive(0.2*str.getAsDouble(), -0.2*fw.getAsDouble(), -0.2*rot.getAsDouble());
 
     }
 }

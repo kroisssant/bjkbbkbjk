@@ -6,19 +6,19 @@ import com.acmerobotics.dashboard.config.Config;
 public class Constants {
     public static final double APRIL_TAG_MAX_VEL = 50; // in / s
     public static final double APRIL_TAG_MAX_ACC = 50; // in / s
-    public static final long WAIT_FOR_BRAT_JOS = 1200;
+    public static final long WAIT_FOR_BRAT_JOS = 3000;
     public static double PRESSURE_DREAPTA_DESCHIS = 0.38;
     public static double PRESSURE_DREAPTA_INCHIS = 0.33;
 
     public static double PRESSURE_STANGA_INCHIS = 0;
     public static double PRESSURE_STANGA_DESCHIS = 0.05;
 
-    public static double PIVOT_JOS = 0;
+    public static double PIVOT_JOS = 0.01;
     public static double PIVOT_SUS = 1;
     public static double PIVOT_SUS_TELEOP= 0.9;
 
     public static double BRAT_SUS = 0.9;
-    public static double BRAT_JOS = 0.07;
+    public static double BRAT_JOS = 0.08;
     public static double BRAT_JOS_2 = 0.06;
 
     public static final int GLISIERA_MAX_VELOCITY = 0;

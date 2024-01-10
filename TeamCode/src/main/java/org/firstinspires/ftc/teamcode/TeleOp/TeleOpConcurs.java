@@ -77,7 +77,7 @@ public class TeleOpConcurs extends CommandOpMode {
         driver1 = new GamepadEx(gamepad1);
         driver2 = new GamepadEx(gamepad2);
 
-        intakeTriggerCommand = new TriggerCommand(intakeSubsystem, ()-> driver1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER), ()-> driver1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER));
+        intakeTriggerCommand = new TriggerCommand(intakeSubsystem, ()-> driver1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER), ()-> driver1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER));
 
 
         driveCommand = new DriveCommand(driveSubsystem, driver1::getLeftY, driver1::getLeftX, driver1::getRightX);
@@ -88,8 +88,6 @@ public class TeleOpConcurs extends CommandOpMode {
         right_trigger_driver2 = new TriggerReader(driver2, GamepadKeys.Trigger.RIGHT_TRIGGER);
 
         pressureOpen = new InstantCommand(() -> {
-            glisiereSubsystem.glisiereAutoToggle = 2;
-            glisiereSubsystem.setGlisiereFinalPosition(0);
             scoringSubsystem.setPressureDreaptaPos(Constants.PRESSURE_DREAPTA_DESCHIS);
             scoringSubsystem.setPressureStangaPos(Constants.PRESSURE_STANGA_DESCHIS);
             scoringSubsystem.pressureToggle = false;
@@ -104,8 +102,6 @@ public class TeleOpConcurs extends CommandOpMode {
         });
 
         pressureClose = new InstantCommand(() -> {
-            glisiereSubsystem.glisiereAutoToggle = 2;
-            glisiereSubsystem.setGlisiereFinalPosition(10);
             scoringSubsystem.setPressureDreaptaPos(Constants.PRESSURE_DREAPTA_INCHIS);
             scoringSubsystem.setPressureStangaPos(Constants.PRESSURE_STANGA_INCHIS);
             scoringSubsystem.pressureToggle = true;
@@ -125,20 +121,25 @@ public class TeleOpConcurs extends CommandOpMode {
                 new InstantCommand(() -> {
                     scoringSubsystem.setPressureStangaPos(Constants.PRESSURE_STANGA_INCHIS);
                     scoringSubsystem.setPressureDreaptaPos(Constants.PRESSURE_DREAPTA_INCHIS);
-                    scoringSubsystem.setPivot(Constants.PIVOT_SUS_TELEOP);
-                }),
 
+                    glisiereSubsystem.glisiereAutoToggle = 2;
+                    glisiereSubsystem.setGlisiereFinalPosition(Constants.GLISIERA_UP);
+                }),
+                new WaitCommand(500),
+                new InstantCommand(() -> {
+                    scoringSubsystem.setBratPos(Constants.BRAT_SUS);
+                }),
                 new WaitCommand(Constants.WAIT_FOR_PIVOT),
 
                 new InstantCommand(()-> {
-                    scoringSubsystem.setBratPos(Constants.BRAT_SUS);
-                    glisiereSubsystem.glisiereAutoToggle = 2;
-                    glisiereSubsystem.setGlisiereFinalPosition(Constants.GLISIERA_UP);
+                    scoringSubsystem.setPivot(Constants.PIVOT_SUS_TELEOP);
                 })
         );
 
         toScoreSequence2 = new SequentialCommandGroup(
                 new InstantCommand(()-> {
+                    scoringSubsystem.setPressureDreaptaPos(Constants.PRESSURE_DREAPTA_INCHIS);
+                    scoringSubsystem.setPressureStangaPos(Constants.PRESSURE_STANGA_INCHIS);
                     scoringSubsystem.setBratPos(Constants.BRAT_JOS);
                     scoringSubsystem.setPivot(Constants.PIVOT_JOS);
                 }),
@@ -153,19 +154,16 @@ public class TeleOpConcurs extends CommandOpMode {
         );
 
         //nou
-//        driver1.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
+//        driver2.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
 //                .whileHeld(new InstantCommand(intakeSubsystem::runFwd))
 //                .whenReleased(new InstantCommand(intakeSubsystem::end));
 //
-//        driver1.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
+//        driver2.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
 //                .whileHeld(new InstantCommand(intakeSubsystem::runRvs))
 //                .whenReleased(new InstantCommand(intakeSubsystem::end));
 
         driver2.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
                 .whenPressed(pivot);
-
-        driver2.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
-                .whenPressed(toScoreSequence2);
 
         driver2.getGamepadButton(GamepadKeys.Button.DPAD_UP)
                 .whileHeld(new InstantCommand(()-> {
@@ -187,14 +185,11 @@ public class TeleOpConcurs extends CommandOpMode {
                     glisiereSubsystem.glisiereAutoToggle = 0;
                 }));
 
-        driver1.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
+        driver2.getGamepadButton(GamepadKeys.Button.Y)
                 .whenPressed(toScoreSequence1);
 
-        driver1.getGamepadButton(GamepadKeys.Button.A)
+        driver2.getGamepadButton(GamepadKeys.Button.A)
                 .whenPressed(toScoreSequence2);
-
-        driver1.getGamepadButton(GamepadKeys.Button.X)
-                .whenPressed(pivot);
 
         driver2.getGamepadButton(GamepadKeys.Button.DPAD_RIGHT)
                 .whenPressed(new InstantCommand(()-> {
@@ -208,7 +203,7 @@ public class TeleOpConcurs extends CommandOpMode {
                         })
                 );
 
-        driver2.getGamepadButton(GamepadKeys.Button.Y)
+        driver1.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
                 .whenPressed(
                         new ConditionalCommand(
                                 pressureOpen,
@@ -217,49 +212,7 @@ public class TeleOpConcurs extends CommandOpMode {
                         )
                 );
 
-        driver1.getGamepadButton(GamepadKeys.Button.Y)
-                .whenPressed(
-                        new ConditionalCommand(
-                                pressureOpen,
-                                pressureClose,
-                                () -> scoringSubsystem.pressureToggle
-                        )
-                );
-
-        driver2.getGamepadButton(GamepadKeys.Button.X)
-                .whenPressed(
-                        new ConditionalCommand(
-                                new InstantCommand(()->{
-                                    scoringSubsystem.setPressureStangaPos(Constants.PRESSURE_STANGA_DESCHIS);
-                                    pressureStangaToggle = false;
-                                }),
-                                new InstantCommand(()->{
-                                    scoringSubsystem.setPressureStangaPos(Constants.PRESSURE_STANGA_INCHIS);
-                                    pressureStangaToggle = true;
-
-                                }),
-                                () -> pressureStangaToggle
-
-                        )
-                );
-
-        driver2.getGamepadButton(GamepadKeys.Button.B)
-                .whenPressed(
-                        new ConditionalCommand(
-                                new InstantCommand(()->{
-                                    scoringSubsystem.setPressureDreaptaPos(Constants.PRESSURE_DREAPTA_DESCHIS);
-                                    pressureDreaptaToggle = false;
-                                }),
-                                new InstantCommand(()->{
-                                    scoringSubsystem.setPressureDreaptaPos(Constants.PRESSURE_DREAPTA_INCHIS);
-                                    pressureDreaptaToggle = true;
-
-                                }),
-                                () -> pressureDreaptaToggle
-                        )
-                );
-
-        driver2.getGamepadButton(GamepadKeys.Button.A)
+        driver2.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
                 .whenPressed(
                         new ConditionalCommand(
                                 new InstantCommand(()->intakeSubsystem.dropdownUp()),
